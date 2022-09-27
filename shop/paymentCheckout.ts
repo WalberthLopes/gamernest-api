@@ -23,7 +23,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2022-08-01",
 });
 
-const YOUR_DOMAIN = "http://127.0.0.1:5173";
+const YOUR_DOMAIN = "https://www.cubecave.net";
 
 payments.options("/api/create-payment-checkout", cors(options));
 

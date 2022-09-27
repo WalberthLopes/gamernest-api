@@ -20,6 +20,8 @@ const signOut: Express = express();
 
 signOut.use(express.json());
 
+signOut.options("/api/sign-out", cors(options));
+
 signOut.get(
   "/api/sign-out",
   cors(options),
