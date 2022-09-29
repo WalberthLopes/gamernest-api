@@ -2,10 +2,7 @@ import express, { Express, Request, Response } from "express";
 import "dotenv/config";
 
 // Auth
-import getCurrentUser from "./auth/getCurrentUser";
-import signIn from "./auth/signIn";
 import signUp from "./auth/signUp";
-import signOut from "./auth/signOut";
 
 // Stripe api
 import payments from "./shop/paymentCheckout";
@@ -15,23 +12,22 @@ import checkoutFullfillment from "./shop/checkoutFullfillment";
 // User profile informations
 import userKeys from "./account/getUserKeys";
 import createNewItem from "./shop/createNewItem";
+import auth from "./auth/authentication";
 
 const app: Express = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4321;
 
 app.use(checkoutFullfillment);
 
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Gamernest Entertainment");
+  res.send("CubeCave MC");
 });
 
 // Auth
-app.use(getCurrentUser);
-app.use(signIn);
 app.use(signUp);
-app.use(signOut);
+app.use(auth);
 
 // Stripe api
 app.use(payments);
