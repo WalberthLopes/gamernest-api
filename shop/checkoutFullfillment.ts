@@ -2,8 +2,9 @@ import Stripe from "stripe";
 import express, { Express, Request, Response } from "express";
 
 import { supabase } from "../database/supabase";
+import { sendMail } from "../mail/sendMail";
 
-const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET as string;
+const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET as any;
 
 const checkoutFullfillment: Express = express();
 
@@ -43,6 +44,8 @@ checkoutFullfillment.post(
           .update({ status: "awaiting" })
           .match({ id: session.id });
 
+        sendMail(session);
+
         if (error) {
           console.log(error);
         }
@@ -70,6 +73,8 @@ checkoutFullfillment.post(
           .update({ status: session.payment_status })
           .match({ id: session.id });
 
+        sendMail(session);
+
         if (error) {
           console.log(error);
         }
@@ -87,6 +92,8 @@ checkoutFullfillment.post(
           .update({ status: session.payment_status })
           .match({ id: session.id });
 
+        sendMail(session);
+
         if (error) {
           console.log(error);
         }
@@ -95,7 +102,6 @@ checkoutFullfillment.post(
       }
     }
 
-    console.log("✅ Success:", event.id);
     res.status(200);
   }
 );

@@ -15,7 +15,7 @@ import createNewItem from "./shop/createNewItem";
 import auth from "./auth/authentication";
 
 const app: Express = express();
-const port = process.env.PORT || 4321;
+const port = process.env.PORT || 1234;
 
 app.use(checkoutFullfillment);
 
