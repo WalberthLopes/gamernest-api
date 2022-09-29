@@ -58,7 +58,7 @@ const sendMail = async (session: any) => {
           "<div>" +
           "<p><strong>Seu pagamento está sendo processado!</strong></p>" +
           "<p>Seu pagamento está sendo processado pelo seu banco.</p>" +
-          "<p>Você receberá um email informando o novo status de sua compra quando ela for processada.</p>" +
+          "<p>Acompanhe o status de seu pagamento através das suas keys em seu perfil.</p>" +
           "<p>Compras realizadas com boleto podem levar de 1 a 3 dias úteis!</p>" +
           "</div>",
       };
