@@ -32,7 +32,7 @@ payments.post(
   cors(options),
   async (req: Request, res: Response) => {
     try {
-      const { props, userData } = req.body;
+      const { props, user } = req.body;
 
       const session = await stripe.checkout.sessions.create({
         line_items: [
@@ -42,14 +42,14 @@ payments.post(
           },
         ],
         mode: "payment",
-        success_url: `${YOUR_DOMAIN}/shop`,
-        cancel_url: `${YOUR_DOMAIN}/shop`,
+        success_url: `${YOUR_DOMAIN}/shop/success`,
+        cancel_url: `${YOUR_DOMAIN}/shop/failed`,
       });
 
       const { error } = await supabase.from("user_payments").insert([
         {
           id: session.id,
-          uuid: userData.uuid,
+          uuid: user,
           method: session.payment_method_types?.[0],
           key: session.id,
           name: props.name,

@@ -2,7 +2,12 @@ import { supabase } from "../database/supabase";
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { userVerify } from "./userVerify";
-import { createUser } from "./createUser";
+
+import * as bcrypt from "bcrypt";
+
+const saltRounds = 10;
+
+import { v4 as uuidv4 } from "uuid";
 
 const options: cors.CorsOptions = {
   allowedHeaders: [
@@ -36,36 +41,31 @@ signUp.post(
       if (response?.success === false) {
         res.json(response.message);
       } else {
-        const { error, user } = await supabase.auth.signUp({
-          email,
-          password,
-        });
+        bcrypt.hash(password, saltRounds, async (err, hash) => {
+          const { error } = await supabase.from("users").insert([
+            {
+              uuid: uuidv4(),
+              username,
+              email,
+              discord,
+              password: hash,
+            },
+          ]);
 
-        if (user) {
-          const uuid = user.id;
+          if (error) {
+            console.log(error);
 
-          const result = await createUser(
-            uuid,
-            username,
-            email,
-            discord,
-            password
-          );
-
-          if (result === false) {
             res.json({
-              message: "Error! Contate o administrador.",
+              message: error.message,
               success: false,
             });
           } else {
             res.json({
-              message: "Falta pouco! Verifique seu email.",
+              message: "Sua conta foi criada com sucesso!",
               success: true,
             });
           }
-        } else {
-          console.log(error);
-        }
+        });
       }
     } catch (error) {
       console.log(error);
